@@ -1,0 +1,344 @@
+openapi: "3.0.3"
+info:
+  title: "Twinkle API"
+  description: "Manage class schedule and score"
+  version: "3.0.0"
+  
+servers:
+  - url: https://api.twinkle.tsukuba.one/v3
+
+paths:
+  /collections:
+    get: 
+      summary: List collections
+      tags:
+        - collections
+      responses:
+        '200':
+          description: Returns Collection models
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collection'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+                  
+  /collections/{collectionId}:
+    parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Collection/properties/id'
+    get:
+      summary: Get specific collection
+      tags:
+        - collections
+      responses:
+        '200':
+          description: Returns Course models
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+    delete:
+      summary: Delete the collection
+      tags:
+        - collections
+      responses:
+        '204':
+          description: Resource is successfly deleted
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+                
+  /collections/{collectionId}/courses:
+    parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Collection/properties/id'
+    get:
+      summary: List courses in the collection
+      tags:
+        - collections
+      responses:
+        '200':
+          description: Returns list of courses
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseRegistration'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+
+    post:
+      summary: Add a course in the collection
+      tags:
+        - collections
+      requestBody:
+        $ref: '#/components/requestBodies/CourseRegistration'
+      responses:
+        '201':
+          description: Returns list of courses
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseRegistration'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+                
+  /collections/{collectionId}/courses/{courseRegistrationId}:
+    parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Collection/properties/id'
+      - name: courseRegistrationId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/CourseRegistration/properties/id'
+    get:
+      summary: Get a course in the collection
+      tags:
+        - collections
+      responses:
+        '200':
+          description: Return courseRegistration model
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/CourseRegistration'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+          
+    post:
+      summary: Update a course in the collection
+      tags:
+        - collections
+      responses:
+        '200':
+          description: Return courseRegistration model
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/CourseRegistration'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+                
+    delete:
+      summary: Delete a course in the collection
+      tags:
+        - collections
+      responses:
+        '204':
+          description: Resource is successfly deleted
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+    
+                
+  /courses/{year}:
+    get:
+      summary: List courses
+      tags:
+        - courses
+      security: []
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Course/properties/year'
+      responses:
+        '200':
+          description: Returns Course models
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+                  
+  /courses/{year}/{courseId}:
+    get:
+      summary: Get specific course
+      tags:
+        - courses
+      security: []
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Course/properties/year'
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Course/properties/id'
+          
+      responses:
+        '200':
+          description: Returns Course models
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Course'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+          
+components:
+  schemas:
+    Collection:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          maxLength: 20
+    Course:
+      type: object
+      required:
+        - id
+        - year
+        - title
+      properties:
+        id:
+          type: string
+          description: Course ID
+          example: AB12345
+        year:
+          type: string
+          description: Open year
+          example: "2022"
+        title:
+          type: string
+          description: Course title
+          example: Media Arts
+        credits:
+          type: integer
+          description: Number of assigned credits
+          example: 1
+        schedules:
+          type: array
+          description: Class schedules
+          items:
+            type: object
+            properties:
+              module:
+                $ref: '#/components/schemas/CourseModule'
+              day:
+                $ref: '#/components/schemas/CourseDay'
+              room:
+                type: string
+                description: Names of class rooms
+                example: '7D519'
+        targets:
+          type: array
+          description: Target grades
+          items:
+            type: integer
+          example: [1, 2]
+        instructors:
+          type: array
+          description: Names of instructors
+          items:
+            type: string
+          example: ["Kazumi Inada"]
+        updatedAt:
+          type: string
+          description: DateTime string of updated time on KdB
+          format: date-time
+          example: "2022-06-13T10:50:15.282Z"
+    CourseRegistration:
+      type: object
+      required:
+        - id
+        - course
+      properties:
+        id: 
+          type: string
+        custom:
+          type: boolean
+        course:
+          $ref: '#/components/schemas/Course'
+    CourseModule:
+      type: string
+      enum: ['SPRING_A', 'SPRING_B', 'SPRING_C', 'FALL_A', 'FALL_B', 'FALL_C']
+    CourseDay:
+      type: string
+      enum: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+          
+  requestBodies:
+    CourseRegistration:
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/CourseRegistration'
+            
+  responses:
+    400BadRequest:
+      description: Request contains something invalid
+  
+    401Unauthorized:
+      description: Request requires authorization
+    
+    403Forbidden:
+      description: Request is not allowed with current authorization
+    
+    404NotFound:
+      description: Requested resource is not found
+  
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+        
+tags:
+  - name: collections
+  - name: courses
+  
+security:
+  - bearerAuth: []
