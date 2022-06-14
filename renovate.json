@@ -1,5 +1,21 @@
 {
   "extends": [
     "config:base"
+  ],
+  "labels": ["dependencies"],
+  "lockFileMaintenance": { "enabled": true },
+  "stabilityDays": 7,
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest",
+        "lockFileMaintenance"
+      ],
+      "automerge": true,
+      "automergeType": "branch"
+    }
   ]
 }
