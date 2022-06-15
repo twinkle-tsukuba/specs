@@ -1,0 +1,192 @@
+openapi: "3.0.3"
+info:
+  title: "Twinkle APxI"
+  description: "Manage class schedule and score"
+  version: "3.0.0"
+
+servers:
+  - url: https://api.twinkle.tsukuba.one/v3
+
+paths:
+  /collections:
+    $ref: "./paths/collections/collections.yaml"
+
+  /collections/{collectionId}:
+    $ref: "./paths/collections/collections_collectionId.yaml"
+
+  /collections/{collectionId}/courses:
+    parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          $ref: "./components/schemas/Collection.yaml#/properties/id"
+    get:
+      summary: List courses in the collection
+      tags:
+        - collections
+      responses:
+        "200":
+          description: Returns list of courses
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "./components/schemas/CourseRegistration.yaml"
+        "400":
+          description: Request contains something invalid
+
+    post:
+      summary: Add a course in the collection
+      tags:
+        - collections
+      requestBody:
+        $ref: "./components/requestBodies/CourseRegistration.yaml"
+      responses:
+        "201":
+          description: Returns list of courses
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "./components/schemas/CourseRegistration.yaml"
+        "400":
+          description: Request contains something invalid
+        "401":
+          description: Request requires authorization
+        "403":
+          description: Request is not allowed with current authorization
+        "404":
+          description: Requested resource is not found
+
+  /collections/{collectionId}/courses/{courseRegistrationId}:
+    parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          $ref: "./components/schemas/Collection.yaml#/properties/id"
+      - name: courseRegistrationId
+        in: path
+        required: true
+        schema:
+          $ref: "./components/schemas/CourseRegistration.yaml#/properties/id"
+    get:
+      summary: Get a course in the collection
+      tags:
+        - collections
+      responses:
+        "200":
+          description: Return courseRegistration model
+          content:
+            "application/json":
+              schema:
+                $ref: "./components/schemas/CourseRegistration.yaml"
+        "400":
+          description: Request contains something invalid
+        "401":
+          description: Request requires authorization
+        "403":
+          description: Request is not allowed with current authorization
+        "404":
+          description: Requested resource is not found
+
+    post:
+      summary: Update a course in the collection
+      tags:
+        - collections
+      requestBody:
+        $ref: "./components/requestBodies/CourseRegistration.yaml"
+      responses:
+        "200":
+          description: Return courseRegistration model
+          content:
+            "application/json":
+              schema:
+                $ref: "./components/schemas/CourseRegistration.yaml"
+        "400":
+          description: Request contains something invalid
+        "401":
+          description: Request requires authorization
+        "403":
+          description: Request is not allowed with current authorization
+        "404":
+          description: Requested resource is not found
+
+    delete:
+      summary: Delete a course in the collection
+      tags:
+        - collections
+      responses:
+        "204":
+          description: Resource is successfully deleted
+        "401":
+          description: Request requires authorization
+        "403":
+          description: Request is not allowed with current authorization
+
+  /courses/{year}:
+    get:
+      summary: List courses
+      tags:
+        - courses
+      security: []
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            $ref: "./components/schemas/Course.yaml#/properties/year"
+      responses:
+        "200":
+          description: Returns Course models
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "./components/schemas/Course.yaml"
+
+  /courses/{year}/{courseId}:
+    get:
+      summary: Get specific course
+      tags:
+        - courses
+      security: []
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            $ref: "./components/schemas/Course.yaml#/properties/year"
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            $ref: "./components/schemas/Course.yaml#/properties/id"
+
+      responses:
+        "200":
+          description: Returns Course models
+          content:
+            "application/json":
+              schema:
+                $ref: "./components/schemas/Course.yaml"
+        "404":
+          description: Requested resource is not found
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+tags:
+  - name: collections
+  - name: courses
+
+security:
+  - bearerAuth: []

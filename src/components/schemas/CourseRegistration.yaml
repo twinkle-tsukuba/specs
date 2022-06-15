@@ -1,0 +1,11 @@
+type: object
+required:
+  - id
+  - course
+properties:
+  id:
+    type: string
+  custom:
+    type: boolean
+  course:
+    $ref: "./Course.yaml"
