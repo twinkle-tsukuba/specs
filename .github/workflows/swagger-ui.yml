@@ -2,7 +2,7 @@ name: Swagger UI
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: ["dev"]
 
 jobs:
   build:
@@ -16,6 +16,8 @@ jobs:
         with:
           output: swagger-ui
           spec-file: src/openapi.yaml
+      - name: Copy schema files
+        run: cp -r src/components src/paths swagger-ui
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
