@@ -1,0 +1,53 @@
+type: object
+required:
+  - id
+  - year
+  - title
+properties:
+  id:
+    type: string
+    description: Course ID
+    example: AB12345
+  year:
+    type: string
+    description: Open year
+    example: "2022"
+  title:
+    type: string
+    description: Course title
+    example: Media Arts
+  credits:
+    type: integer
+    description: Number of assigned credits
+    example: 1
+  schedules:
+    type: array
+    description: Class schedules
+    items:
+      type: object
+      properties:
+        module:
+          $ref: "./CourseModule.yaml"
+        day:
+          $ref: "./CourseDay.yaml"
+        room:
+          type: string
+          description: Names of class rooms
+          example: "7D519"
+  targets:
+    type: array
+    description: Target grades
+    items:
+      type: integer
+    example: [1, 2]
+  instructors:
+    type: array
+    description: Names of instructors
+    items:
+      type: string
+    example: ["Kazumi Inada"]
+  updatedAt:
+    type: string
+    description: DateTime string of updated time on KdB
+    format: date-time
+    example: "2022-06-13T10:50:15.282Z"
