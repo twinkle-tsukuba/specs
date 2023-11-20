@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  title: "Twinkle APxI"
+  title: "Twinkle API"
   description: "Manage class schedule and score"
   version: "3.0.0"
 
