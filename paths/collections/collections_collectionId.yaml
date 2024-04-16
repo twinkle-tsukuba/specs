@@ -1,0 +1,36 @@
+parameters:
+  - name: collectionId
+    in: path
+    required: true
+    schema:
+      $ref: "../../components/schemas/Collection.yaml#/properties/id"
+get:
+  summary: Get specific collection
+  tags:
+    - collections
+  responses:
+    "200":
+      description: Returns Course models
+      content:
+        "application/json":
+          schema:
+            $ref: "../../components/schemas/Course.yaml"
+    "400":
+      description: Request contains something invalid
+    "401":
+      description: Request requires authorization
+    "403":
+      description: Request is not allowed with current authorization
+    "404":
+      description: Requested resource is not found
+delete:
+  summary: Delete the collection
+  tags:
+    - collections
+  responses:
+    "204":
+      description: Resource is successfully deleted
+    "401":
+      description: Request requires authorization
+    "403":
+      description: Request is not allowed with current authorization

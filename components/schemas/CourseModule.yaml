@@ -1,0 +1,8 @@
+type: string
+enum:
+  - "SPRING_A"
+  - "SPRING_B"
+  - "SPRING_C"
+  - "FALL_A"
+  - "FALL_B"
+  - "FALL_C"

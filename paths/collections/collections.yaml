@@ -1,0 +1,15 @@
+get:
+  summary: List collections
+  tags:
+    - collections
+  responses:
+    "200":
+      description: Returns Collection models
+      content:
+        "application/json":
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/Collection.yaml"
+    "401":
+      description: Request requires authorization

@@ -1,0 +1,9 @@
+content:
+  "application/json":
+    schema:
+      type: object
+      properties:
+        custom:
+          $ref: "../schemas/CourseRegistration.yaml#/properties/custom"
+        course:
+          $ref: "../schemas/CourseRegistration.yaml#/properties/course"
